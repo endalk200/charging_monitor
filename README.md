@@ -1,16 +1,8 @@
-# charging_monitor
+# Charging Monitor
 
-A new Flutter project.
+Most smartphones have Lithium ion batteries which have greater battery life and endurance. When charging these
+batteries it should not surpass 80%. If the battery is charged fully at 100% the battery life will degrade overtime.
+Thus when charging your battery don't let it pass 80%.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This app helps you do just that. It notifies you when your battery gets at 80% capacity so that you will remove the
+charging cord and keep your battery healthy for longer time.
