@@ -34,20 +34,31 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final Battery _battery = Battery();
 
-  BatteryState? _batteryState;
-  late StreamSubscription<BatteryState> _batteryStateSubscription;
+  late BatteryState _battery_state;
+  late int _battery_level;
+  late String _name = "Endalk";
 
   @override
   void initState() {
     super.initState();
 
-    _batteryStateSubscription =
-        _battery.onBatteryStateChanged.listen((BatteryState state) {
-      setState(() {
-        _batteryState = state;
+    _battery.batteryLevel.then((level) {
+      this.setState(() {
+        _battery_level = level;
+      });
+    });
+
+    _battery.onBatteryStateChanged.listen((BatteryState state) {
+      _battery.batteryLevel.then((level) {
+        this.setState(() {
+          _battery_level = level;
+          _battery_state = state;
+        });
       });
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,28 +69,30 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Container(
         margin: const EdgeInsets.only(top: 10.0),
-        child: Card(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const ListTile(
-                leading: Icon(Icons.battery_std_sharp, size: 72.0),
-                title: Text('Battery Status '),
-                subtitle: Text('This is a subtitle.'),
-              ),
-            ],
+        child: Container(
+          child: Card(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const ListTile(
+                  leading: Icon(Icons.battery_std_sharp, size: 50.0),
+                  title: Text('Battery Status '),
+                  subtitle: Text('This is a subtitle. $_name'),
+                ),
+              ],
+            ),
           ),
-        ),
+        )
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.battery_unknown),
         onPressed: () async {
-          final int batteryLevel = await _battery.batteryLevel;
+
           // ignore: unawaited_futures
           showDialog<void>(
             context: context,
             builder: (_) => AlertDialog(
-              content: Text('Battery: $batteryLevel%'),
+              content: Text('Battery: 100%'),
               actions: <Widget>[
                 TextButton(
                   child: const Text('OK'),
@@ -98,10 +111,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void dispose() {
     super.dispose();
-    // ignore: unnecessary_null_comparison
-    if (_batteryStateSubscription != null) {
-      _batteryStateSubscription.cancel();
-    }
   }
 }
 
